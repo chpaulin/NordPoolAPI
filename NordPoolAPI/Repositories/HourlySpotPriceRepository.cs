@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -33,12 +34,7 @@ namespace NordPoolAPI.Repositories
 			{
 				foreach (var rowColumn in row.Columns.Where(c => c.Name == area))
 				{
-					if (decimal.TryParse(rowColumn.Value, out var value))
-					{
-						value = decimal.Divide(value, 1000);
-
-						areaObj.SpotPrices.Add(new SpotPrice(value, row.StartTime));
-					}
+					AddSpotPrice(rowColumn, areaObj, row);
 				}
 			}
 
@@ -57,16 +53,21 @@ namespace NordPoolAPI.Repositories
 				{
 					var areaObj = areas.First(a => a.Name == rowColumn.Name);
 
-					if (decimal.TryParse(rowColumn.Value, out var value))
-					{
-						value = decimal.Divide(value, 1000);
-
-						areaObj.SpotPrices.Add(new SpotPrice(value, row.StartTime));
-					}
+					AddSpotPrice(rowColumn, areaObj, row);
 				}
 			}
 
 			return areas;
+		}
+
+		private static void AddSpotPrice(Column rowColumn, Area areaObj, Row row)
+		{
+			if (decimal.TryParse(rowColumn.Value, NumberStyles.Any, CultureInfo.CreateSpecificCulture("sv-SE"), out var value))
+			{
+				value = decimal.Divide(value, 1000);
+
+				areaObj.SpotPrices.Add(new SpotPrice(value, row.StartTime));
+			}
 		}
 
 		private async Task<IOrderedEnumerable<Row>> GetRates()
