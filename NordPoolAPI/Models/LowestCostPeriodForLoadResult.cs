@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace NordPoolAPI.Models
 {
-	public class LowesCostPeriodForLoadResult
+	public class LowestCostPeriodForLoadResult
 	{
 		private readonly double _power;
 		private readonly TimeSpan _time;
@@ -11,8 +11,9 @@ namespace NordPoolAPI.Models
 		private readonly double _fraction;
 		private readonly double _hours;
 
-		public LowesCostPeriodForLoadResult(double power, TimeSpan time, params SpotPrice[] spotPrices)
+		public LowestCostPeriodForLoadResult(double energy, double power, TimeSpan time, params SpotPrice[] spotPrices)
 		{
+			EnergyUnits = energy;
 			_power = power;
 			_time = time;
 			_spotPrices = spotPrices;
@@ -22,6 +23,12 @@ namespace NordPoolAPI.Models
 		}
 
 		public decimal Cost => GetCost();
+
+		public double EnergyUnits { get; }
+
+		public decimal AveragePricePerUnit => _spotPrices.Average(s => s.Price);
+
+		public string UnitType { get; } = "kWh";
 
 		public string Currency { get; } = "SEK";
 
@@ -39,7 +46,7 @@ namespace NordPoolAPI.Models
 		}
 
 		public DateTime Start => _spotPrices.First().Time;
-		public DateTime Stop => _spotPrices.Last().Time.AddHours(_fraction);
+		public DateTime Stop => _spotPrices.Last().Time.AddHours(_fraction == 0 ? 1 : _fraction);
 
 	}
 }
