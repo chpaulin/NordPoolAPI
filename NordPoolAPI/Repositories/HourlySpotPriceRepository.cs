@@ -62,7 +62,7 @@ namespace NordPoolAPI.Repositories
 
 		private static void AddSpotPrice(Column rowColumn, Area areaObj, Row row)
 		{
-			if (decimal.TryParse(rowColumn.Value, NumberStyles.Any, CultureInfo.CreateSpecificCulture("sv-SE"), out var value))
+			if (decimal.TryParse(rowColumn.Value, NumberStyles.Any, new CultureInfo("sv-SE"), out var value))
 			{
 				value = decimal.Divide(value, 1000);
 
