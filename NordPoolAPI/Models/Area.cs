@@ -17,5 +17,6 @@ namespace NordPoolAPI.Models
 	    public SpotPrice Min => SpotPrices.OrderBy(s => s.Price).FirstOrDefault();
 	    public SpotPrice Max => SpotPrices.OrderByDescending(s => s.Price).FirstOrDefault();
 	    public decimal Average => SpotPrices.Average(s => s.Price);
+	    public string Currency { get; } = "SEK";
 	}
 }
