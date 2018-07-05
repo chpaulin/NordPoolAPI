@@ -25,7 +25,7 @@ namespace NordPoolAPI.Controllers
 		/// </summary>
 		/// <returns></returns>
 		[HttpGet]
-		[Route("GetLowesCostPeriodForLoad")]
+		[Route("GetLowestCostPeriodForLoad")]
 		public async Task<LowestCostPeriodForLoadResult> GetLowesCostPeriodForLoad(double energy, double power, string area)
 		{
 			var result = await GetOptimalPeriodAsync(energy, power, area);
