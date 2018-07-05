@@ -18,7 +18,7 @@ namespace NordPoolAPI.Models
 			_time = time;
 			_spotPrices = spotPrices;
 
-			_hours = _time.TotalHours / 1;
+			_hours = Math.Floor(_time.TotalHours);
 			_fraction = _time.TotalHours % 1;
 		}
 
